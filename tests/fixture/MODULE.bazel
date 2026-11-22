@@ -5,3 +5,6 @@ local_path_override(
     module_name = "bazel_style",
     path = "../..",
 )
+
+# For tools/tofu, which formats .tf and .tfvars files with tofu fmt.
+bazel_dep(name = "rules_tofu", version = "0.6.0", dev_dependency = True)

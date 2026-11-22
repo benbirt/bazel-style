@@ -9,7 +9,8 @@
 #
 # The fixture also holds a .editorconfig, .prettierrc.json, .yamlfmt and
 # .djlintrc with other settings, which bazel_style must ignore, and a file
-# marked rules-lint-ignored, which format must leave alone.
+# marked rules-lint-ignored, which format must leave alone. tools/tofu
+# overrides one formatter (tofu fmt for .tf and .tfvars files).
 #
 # Needs a git checkout: the formatters find files with git ls-files, and the
 # result is compared with git diff.
@@ -50,5 +51,14 @@ git diff --exit-code -- . || fail "format did not give back the committed files 
 echo "--- format.check and lint pass again"
 bazel run //tools:format.check || fail "format.check failed after format"
 bazel run //tools:lint || fail "lint failed after format"
+
+echo "--- an overridden formatter: tools/tofu formats .tf and .tfvars with tofu fmt"
+tofu_fmt=//tools/tofu:format_Terraform_with_terraform-fmt
+[ -n "$(bazel query "somepath($tofu_fmt, @rules_tofu//tofu)")" ] || fail "$tofu_fmt does not run @rules_tofu//tofu"
+[ -z "$(bazel query "somepath(//tools:format, @rules_tofu//tofu)")" ] || fail "//tools:format runs @rules_tofu//tofu"
+for file in main.tf terraform.tfvars; do cp "$unformatted/$file.unformatted" "$fixture/$file"; done
+! bazel run "$tofu_fmt.check" || fail "$tofu_fmt.check passed on unformatted files"
+bazel run "$tofu_fmt" || fail "$tofu_fmt failed"
+git diff --exit-code -- . || fail "$tofu_fmt did not give back the committed files (diff above)"
 
 echo "PASS"

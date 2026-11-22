@@ -33,6 +33,10 @@ load("@bazel_style//:defs.bzl", "style")
 style()
 ```
 
+To use another formatter for a language, pass it under rules_lint's name for that language, for example
+`style(terraform = "@rules_tofu//tofu")` in a repository that has rules_tofu. It runs with rules_lint's flags, without
+bazel_style's.
+
 `style()` creates three targets:
 
 - `bazel run //tools:format` formats every file git tracks, by language.
@@ -56,10 +60,10 @@ add `# buildifier: disable=<warning>` with the reason.
 | Starlark                     | buildifier                                   |
 | YAML                         | yamlfmt                                      |
 | Go                           | gofmt, from the build's host Go SDK          |
-| OpenTofu (`.tf`, `.tfvars`)  | `tofu fmt`, from rules_tofu                  |
+| OpenTofu (`.tf`, `.tfvars`)  | `terraform fmt`, from rules_lint             |
 
 Every repository gets every formatter, whether or not it has files of that language, so the first run fetches them all
-(Node, Python, a Go SDK, OpenTofu and the others).
+(Node, Python, a Go SDK, Terraform and the others).
 
 ## Settings
 
@@ -72,7 +76,7 @@ The settings are fixed here: a repository's own configuration files (`.editorcon
   formats every `.html` file, because Prettier changes the meaning of template syntax.
 - shfmt: two-space indentation, with `case` branches indented (`-i 2 -ci`).
 - yamlfmt: the basic formatter, keeping single blank lines ([`yamlfmt/.yamlfmt`](yamlfmt/.yamlfmt)).
-- ruff, buildifier, gofmt and `tofu fmt`: their defaults.
+- ruff, buildifier, gofmt and `terraform fmt`: their defaults.
 
 ## Changing it
 
