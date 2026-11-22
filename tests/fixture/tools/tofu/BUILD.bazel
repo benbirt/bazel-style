@@ -1,0 +1,4 @@
+load("@bazel_style//:defs.bzl", "style")
+
+# The same with one formatter overridden: OpenTofu's own `tofu fmt`.
+style(terraform = "@rules_tofu//tofu")
