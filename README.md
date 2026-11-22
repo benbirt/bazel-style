@@ -76,6 +76,9 @@ The settings are fixed here: a repository's own configuration files (`.editorcon
 
 ## Changing it
 
+Dependabot moves Prettier and djlint forward weekly, and the Bazel updates workflow moves Bazel, the modules and Node.
+By hand:
+
 - Prettier's version:
   `bazel run -- @pnpm//:pnpm --dir $PWD/prettier add --save-dev --save-exact --lockfile-only prettier@<version>`.
 - djlint's version: edit `djlint/requirements.in` if needed, then `bazel run //djlint:requirements.update`.

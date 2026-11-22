@@ -1,6 +1,33 @@
-# Weekly updates of the GitHub Actions that CI uses.
+# Weekly version updates, one pull request per ecosystem.
+# dependabot-auto-merge.yaml merges them once CI passes, and each consumer
+# picks them up through its own Bazel updates pull request.
+#
+# Not covered here: .bazelversion, the Bazel modules and the Node version,
+# which bazel-updates.yaml advances.
 version: 2
 updates:
+  # prettier/package.json and its pnpm lock.
+  - package-ecosystem: npm
+    directory: /prettier
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3
+    groups:
+      prettier:
+        patterns: ["*"]
+
+  # djlint/requirements.txt (with requirements.in), written by uv.
+  - package-ecosystem: pip
+    directory: /djlint
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3
+    groups:
+      djlint:
+        patterns: ["*"]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
