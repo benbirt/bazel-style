@@ -15,5 +15,9 @@ permissions:
 jobs:
   bazel-updates:
     uses: benbirt/workflows/.github/workflows/bazel-updates.yml@de69053071842637255bbe8c0a6fa5eca77bf4da # v1.1.0
+    with:
+      # rules_go stays at rules_tofu's version: under Bazel's minimal version
+      # selection, a newer one here would raise every consumer's rules_go.
+      skip_modules: rules_go
     secrets:
       AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
