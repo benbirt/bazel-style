@@ -1,0 +1,8 @@
+interface Point {
+  x: number;
+  y: number;
+}
+export const origin: Point = { x: 0, y: 0 };
+export function distance(a: Point, b: Point): number {
+  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+}

@@ -1,0 +1,4 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}"><head><title>{% block title %}{{ config.title }}{% endblock title %}</title></head>
+<body>{% if page %}<article><h1>{{ page.title }}</h1>{{ page.content | safe }}</article>{% else %}<p>Nothing here.</p>{% endif %}
+<ul>{% for p in section.pages %}<li><a href="{{ p.permalink }}">{{ p.title }}</a></li>{% endfor %}</ul></body></html>

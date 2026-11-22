@@ -1,0 +1,7 @@
+"""A consumer of bazel_style with a file of every language it formats."""
+
+bazel_dep(name = "bazel_style", version = "0.0.0", dev_dependency = True)
+local_path_override(
+    module_name = "bazel_style",
+    path = "../..",
+)

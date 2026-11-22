@@ -1,0 +1,8 @@
+variable "name" {
+type = string
+  default="fixture"
+}
+locals {
+  a = 1
+  longer_name = 2
+}

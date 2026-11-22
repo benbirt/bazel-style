@@ -1,0 +1,2 @@
+load(":lib.bzl","greeting")
+greeting(message="Hello",name="hello")

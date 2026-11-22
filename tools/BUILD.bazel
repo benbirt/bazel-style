@@ -1,0 +1,5 @@
+load("//:defs.bzl", "style")
+
+# bazel_style formats and lints itself: //tools:format, //tools:format.check
+# and //tools:lint.
+style()

@@ -1,0 +1,3 @@
+/bazel-*
+/tests/fixture/bazel-*
+/tests/fixture/MODULE.bazel.lock

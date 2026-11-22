@@ -1,0 +1,5 @@
+# Setting ASPECT_TOOLS_TELEMETRY to -all turns off aspect_tools_telemetry, pulled
+# in by aspect_rules_lint and aspect_rules_js. Otherwise it reports Bazel and
+# module versions to Aspect. An empty value does not turn it off: the module
+# treats it as unset and reports everything.
+common --repo_env=ASPECT_TOOLS_TELEMETRY=-all

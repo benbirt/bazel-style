@@ -1,0 +1,9 @@
+Fixture
+=======
+
+- A list item
+- Another item, on a line that is much longer than one hundred and twenty characters, which Prettier leaves alone because prose is preserved.
+
+| a         | b   |
+| --------- | --- |
+| long cell | x   |

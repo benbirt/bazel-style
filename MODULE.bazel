@@ -1,0 +1,78 @@
+"""bazel_style: the formatters, their settings and the Starlark lint shared by benbirt's Bazel repositories.
+
+Use it as a dev dependency, pinned by commit:
+
+    bazel_dep(name = "bazel_style", version = "0.0.0", dev_dependency = True)
+    git_override(
+        module_name = "bazel_style",
+        commit = "<commit>",
+        remote = "https://github.com/benbirt/bazel-style.git",
+    )
+
+and call `style()` in tools/BUILD.bazel (see README.md).
+"""
+
+module(name = "bazel_style")
+
+# Every dependency is a normal one: consumers need them all to run the
+# formatters. Consumers depend on bazel_style as a dev dependency, so none of
+# this reaches their own users.
+bazel_dep(name = "aspect_rules_lint", version = "2.9.1")
+bazel_dep(name = "buildifier_prebuilt", version = "10.2.0")
+bazel_dep(name = "bazel_lib", version = "3.8.0")
+bazel_dep(name = "rules_shell", version = "0.10.0")
+
+# OpenTofu's formatter, `tofu fmt`, through @rules_tofu//tofu.
+bazel_dep(name = "rules_tofu", version = "0.6.0")
+
+# gofmt comes from the host Go SDK the build already has: the root module's,
+# else the first dependency's (rules_tofu brings one). rules_lint brings
+# rules_go 0.42.0 through rules_buf, which Bazel 9 cannot load.
+bazel_dep(name = "rules_go", version = "0.65.0")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+use_repo(go_sdk, "go_host_compatible_sdk_label")
+
+# Prettier, from prettier/package.json and prettier/pnpm-lock.yaml.
+bazel_dep(name = "aspect_rules_js", version = "3.6.1")
+bazel_dep(name = "rules_nodejs", version = "6.7.7")
+
+# The Node that runs Prettier unless the root module chooses another.
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "24.22.1")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+npm.npm_translate_lock(
+    name = "bazel_style_npm",
+    pnpm_lock = "//prettier:pnpm-lock.yaml",
+)
+use_repo(npm, "bazel_style_npm")
+
+# pnpm, to change Prettier's version:
+#   bazel run -- @pnpm//:pnpm --dir $PWD/prettier add --save-dev --save-exact --lockfile-only prettier@<version>
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm", dev_dependency = True)
+use_repo(pnpm, "pnpm")
+
+# djlint, from PyPI as pinned in djlint/requirements.txt.
+bazel_dep(name = "rules_python", version = "2.5.1")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+
+# The default Python of rules_python, which its own build tools use too, so
+# no second interpreter is fetched.
+python.toolchain(python_version = "3.14")
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "bazel_style_pip",
+    python_version = "3.14",
+    requirements_lock = "//djlint:requirements.txt",
+)
+use_repo(pip, "bazel_style_pip")
+
+# uv, which writes djlint/requirements.txt: `bazel run //djlint:requirements.update`.
+# rules_python's lock rule selects on @platforms.
+uv = use_extension("@rules_python//python/uv:uv.bzl", "uv", dev_dependency = True)
+uv.configure()
+
+bazel_dep(name = "platforms", version = "1.1.0", dev_dependency = True)

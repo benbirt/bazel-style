@@ -1,0 +1,25 @@
+load("@bazel_style_npm//:defs.bzl", "npm_link_all_packages")
+load("@bazel_style_npm//prettier:prettier/package_json.bzl", prettier = "bin")
+load("//private:configured_tool.bzl", "configured_tool")
+
+npm_link_all_packages(name = "node_modules")
+
+prettier.prettier_binary(
+    name = "prettier_bin",
+    # bazel run starts formatters in the workspace, not the output tree.
+    env = {"BAZEL_BINDIR": "."},
+)
+
+# Prettier with .prettierrc.json from here. --config stops Prettier looking for
+# a configuration file of the repository's own, and --no-editorconfig stops it
+# reading .editorconfig.
+configured_tool(
+    name = "prettier",
+    args_before_config = [
+        "--no-editorconfig",
+        "--config",
+    ],
+    config = ".prettierrc.json",
+    tool = ":prettier_bin",
+    visibility = ["//visibility:public"],
+)

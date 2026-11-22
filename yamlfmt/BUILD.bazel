@@ -1,0 +1,11 @@
+load("//private:configured_tool.bzl", "configured_tool")
+
+# yamlfmt with .yamlfmt from here; -conf stops it looking for one in the
+# repository.
+configured_tool(
+    name = "yamlfmt",
+    args_before_config = ["-conf"],
+    config = ".yamlfmt",
+    tool = "@aspect_rules_lint//format:yamlfmt",
+    visibility = ["//visibility:public"],
+)

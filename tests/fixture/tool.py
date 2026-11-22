@@ -1,0 +1,10 @@
+import sys
+
+
+def main(argv):
+    values = {"a": 1, "b": 2}
+    print("args", argv, values)
+
+
+if __name__ == "__main__":
+    main(sys.argv)
