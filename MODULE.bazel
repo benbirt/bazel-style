@@ -23,7 +23,7 @@ bazel_dep(name = "buildifier_prebuilt", version = "10.2.0")
 # gofmt comes from the host Go SDK the build already has: the root module's,
 # else the first dependency's, else rules_go's default SDK. rules_lint brings
 # rules_go 0.42.0 through rules_buf, which Bazel 9 cannot load.
-bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "rules_go", version = "0.65.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 use_repo(go_sdk, "go_host_compatible_sdk_label")
