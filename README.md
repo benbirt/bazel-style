@@ -16,7 +16,7 @@ git_override(
 )
 ```
 
-The [Bazel updates](https://github.com/benbirt/workflows) workflow moves `commit` to the head of `main`.
+The [Bazel updates](https://github.com/benbirt/github-infra) workflow moves `commit` to the head of `main`.
 
 In `.bazelrc`, to turn off the telemetry that aspect_rules_lint and aspect_rules_js report to Aspect (an empty value
 does not):
