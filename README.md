@@ -53,6 +53,7 @@ add `# buildifier: disable=<warning>` with the reason.
 | ---------------------------- | -------------------------------------------- |
 | CSS, LESS, SCSS              | Prettier                                     |
 | JavaScript, TypeScript, JSON | Prettier                                     |
+| Jsonnet                      | jsonnetfmt                                   |
 | Markdown                     | Prettier                                     |
 | HTML, templates included     | djlint, with its embedded CSS and JavaScript |
 | Python                       | ruff                                         |
@@ -63,7 +64,7 @@ add `# buildifier: disable=<warning>` with the reason.
 | OpenTofu (`.tf`, `.tfvars`)  | `terraform fmt`, from rules_lint             |
 
 Every repository gets every formatter, whether or not it has files of that language, so the first run fetches them all
-(Node, Python, a Go SDK, Terraform and the others).
+(Node, Python, a Go SDK, Terraform and the others) and compiles jsonnetfmt with the host C++ toolchain.
 
 ## Settings
 
@@ -76,7 +77,7 @@ The settings are fixed here: a repository's own configuration files (`.editorcon
   formats every `.html` file, because Prettier changes the meaning of template syntax.
 - shfmt: two-space indentation, with `case` branches indented (`-i 2 -ci`).
 - yamlfmt: the basic formatter, keeping single blank lines ([`yamlfmt/.yamlfmt`](yamlfmt/.yamlfmt)).
-- ruff, buildifier, gofmt and `terraform fmt`: their defaults.
+- ruff, buildifier, gofmt, jsonnetfmt and `terraform fmt`: their defaults.
 
 ## Changing it
 

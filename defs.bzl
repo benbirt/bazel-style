@@ -22,6 +22,7 @@ _FORMATTERS = {
     },
     # Also TypeScript and JSON.
     "javascript": {"tool": Label("//prettier")},
+    "jsonnet": {"tool": Label("@jsonnet//cmd:jsonnetfmt")},
     "markdown": {"tool": Label("//prettier")},
     "python": {"tool": Label("@aspect_rules_lint//format:ruff")},
     "shell": {
